@@ -86,6 +86,113 @@ namespace ems
             }
             return "";
         }
+
+        [WebMethod]
+        public void variable()
+        {
+            try
+            {
+                cnx = new cnx();
+                rdr = cnx.ExecuteCommand("SELECT * FROM TC_VARIABLE WHERE ID_VARIABLE IN (1,2,3,4)", CommandType.Text);
+
+
+                List<variable> list = new List<variable>();
+                if (rdr.HasRows)
+                {
+                    while (rdr.Read())
+                    {
+                        variable f = new variable()
+                        {
+                            id_variable = rdr["ID_VARIABLE"].ToString(),
+                            descripcion = rdr["DESCRIPCION"].ToString()
+                        };
+                        list.Add(f);
+                    }
+                    rdr.Close();
+                    rdr = null;
+                    string data = JsonConvert.SerializeObject(list);
+                    Context.Response.Write(data);
+                    //return data;
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+
+        [WebMethod]
+        public string sector(string variable)
+        {
+            try
+            {
+                cnx = new cnx();
+                rdr = cnx.ExecuteCommand("select distinct ID_ACTIVIDAD_PADRE, b.DESCRIPCION from DSC.TI_FUENTE_VARIABLE_ACTIVIDAD a left join TC_ACTIVIDAD b on a.ID_ACTIVIDAD_PADRE = b.ID_ACTIVIDAD where ID_FUENTE = 1 and ID_VARIABLE = "+variable+"", CommandType.Text);
+
+
+                List<variable> list = new List<variable>();
+                if (rdr.HasRows)
+                {
+                    while (rdr.Read())
+                    {
+                        variable f = new variable()
+                        {
+                            id_variable = rdr["ID_ACTIVIDAD_PADRE"].ToString(),
+                            descripcion = rdr["DESCRIPCION"].ToString()
+                        };
+                        list.Add(f);
+                    }
+                    rdr.Close();
+                    rdr = null;
+                    string data = JsonConvert.SerializeObject(list);
+                    //Context.Response.Write(data);
+                    return data;
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+            return "";
+        }
+        [WebMethod]
+        public string actividad(string actividad)
+        {
+            try
+            {
+                cnx = new cnx();
+                rdr = cnx.ExecuteCommand("select a.ID_ACTIVIDAD, b.DESCRIPCION from DSC.TI_FUENTE_VARIABLE_ACTIVIDAD a  left join tc_actividad b on a.id_actividad = b.id_actividad where a.ID_FUENTE = 1 and a.ID_VARIABLE = 1 and a.ID_ACTIVIDAD_PADRE = "+actividad+"", CommandType.Text);
+
+
+                List<variable> list = new List<variable>();
+                if (rdr.HasRows)
+                {
+                    while (rdr.Read())
+                    {
+                        variable f = new variable()
+                        {
+                            id_variable = rdr["ID_ACTIVIDAD"].ToString(),
+                            descripcion = rdr["DESCRIPCION"].ToString()
+                        };
+                        list.Add(f);
+                    }
+                    rdr.Close();
+                    rdr = null;
+                    string data = JsonConvert.SerializeObject(list);
+                    //Context.Response.Write(data);
+                    return data;
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+            return "";
+        }
+        
     }
 }
 public class datos
@@ -117,4 +224,9 @@ public class datos
     public string OctAct { set; get; }
     public string NovAct { set; get; }
     public string DicAct { set; get; }
+}
+public class variable
+{
+    public string id_variable { set; get; }
+    public string descripcion { set; get; }
 }

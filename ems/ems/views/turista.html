@@ -89,4 +89,84 @@
             <div id="graph1" style="text-align:center"></div>
         </div>
     </div>
+    <br />
+    <div layout="row" ng-controller="granjero">
+        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+            <tbody>
+                <tr>
+                    <td height="30" align="center" bgcolor="#dee4e9" colspan="3">
+                        <span style="color: rgb(1, 45, 89); font-family: Arial, Helvetica, sans-serif; font-size: 13px; font-weight: bold;">Principales variables</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="left" valign="middle" bgcolor="#ffffff">
+                        &nbsp;
+                    </td>
+                    <td align="left" valign="middle" bgcolor="#ffffff">
+                        &nbsp;
+                    </td>
+                </tr>
+                <tr>
+                    <td width="150" align="left" valign="middle" bgcolor="#ffffff">
+                        <span class="texto">Variable:</span>
+                    </td>
+                    <td align="left" valign="middle" bgcolor="#ffffff">
+                        <div id="UpdatePanel3">
+                            <select ng-model="vari" ng-change="getSectores(vari)" ng-options="v.descripcion for v in variables track by v.id_variable" style="width: 520px;">
+                            </select>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="left" valign="middle" bgcolor="#ffffff">
+                        <span class="texto">Sector: </span>
+                    </td>
+                    <td align="left" valign="middle" bgcolor="#ffffff">
+                        <div id="UpdatePanel1">
+                            <select ng-model="sec" ng-change="getActividad(sec)" ng-options="v.descripcion for v in sectores track by v.id_variable" style="width: 520px;">
+                        
+                            </select>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="left" valign="middle" bgcolor="#ffffff">
+                        <span class="texto">Actividad económica:</span>
+                    </td>
+                    <td align="left" valign="middle" bgcolor="#ffffff">
+                        <div id="UpdatePanel2">
+                            <select ng-model="act" ng-options="v.descripcion for v in actividades track by v.id_variable" style="width: 520px;"></select>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="left" valign="middle" bgcolor="#ffffff">
+                        <span class="texto">Tipo de dato:</span>
+                    </td>
+                    <td align="left" valign="middle" bgcolor="#ffffff">
+                        <div id="UpdatePanel4">
+                            <table id="rblTipoDato">
+                                <tbody>
+                                    <tr>
+                                        <td><input name="rblTipoDato" id="rblTipoDato_0" type="radio" value="Índice (base 2008=100)"><label>Índice (base 2008=100)</label></td>
+                                    </tr>
+                                    <tr>
+                                        <td><input name="rblTipoDato" id="rblTipoDato_1" type="radio" checked="checked" value="Variación anual"><label>Variación anual</label></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="left" valign="middle" bgcolor="#ffffff">
+                        &nbsp;
+                    </td>
+                    <td align="left" valign="middle" bgcolor="#ffffff">
+                        &nbsp;
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 </div>

@@ -4,7 +4,7 @@ app.controller('turista', function ($scope, $http) {
     var i = JSON.stringify({ tipo_dato: 1 });
     var v = JSON.stringify({ tipo_dato: 2 });
     $http.post("turista.asmx/MostrarDatos", i).success(function ($response) {
-        console.log($response.d);
+        //console.log($response.d);
         var aux = 0;
         var aux2 = 0;
         var data = JSON.parse($response.d);
@@ -110,3 +110,37 @@ app.controller('turista', function ($scope, $http) {
         });
     });
 });
+
+app.controller('granjero', function ($scope, $http) {
+
+    $http.post('turista.asmx/variable').success(function ($response) {
+        $scope.variables = $response;
+        $scope.vari = $response[0];
+        var i = JSON.stringify({ variable: $response[0].id_variable });
+        $http.post('turista.asmx/sector', i).success(function ($response) {
+            $scope.sectores = JSON.parse($response.d);
+            $scope.sec = JSON.parse($response.d)[0];
+            var i = JSON.stringify({ actividad: JSON.parse($response.d)[0].id_variable });
+            $http.post('turista.asmx/actividad', i).success(function ($response) {
+                $scope.actividades = JSON.parse($response.d);
+                $scope.act = JSON.parse($response.d)[0];
+            });
+        });
+
+    });
+   
+    $scope.getSectores = function (vari) {
+        var i = JSON.stringify({ variable: vari.id_variable });
+        $http.post('turista.asmx/sector',i).success(function ($response) {
+            $scope.sectores = JSON.parse($response.d);
+            $scope.sec = JSON.parse($response.d)[0];
+        });
+    }
+    $scope.getActividad = function (sec) {
+        var i = JSON.stringify({ actividad: sec.id_variable });
+        $http.post('turista.asmx/actividad', i).success(function ($response) {
+            $scope.actividades = JSON.parse($response.d);
+            $scope.act = JSON.parse($response.d)[0];
+        });
+    }
+})
