@@ -79,7 +79,9 @@
     <Content Include="js\angular.min.js" />
     <Content Include="js\app.js" />
     <Content Include="js\controllers\turista.js" />
+    <Content Include="js\fusioncharts.charts.js" />
     <Content Include="js\fusioncharts.js" />
+    <Content Include="js\fusioncharts.theme.fint.js" />
     <Content Include="js\jquery.min.js" />
     <Content Include="turista.asmx" />
     <Content Include="views\turista.html" />

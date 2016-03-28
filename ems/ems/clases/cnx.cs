@@ -17,7 +17,7 @@ namespace ems
 
         public cnx()
         {
-            conn = new SqlConnection(ConfigurationManager.ConnectionStrings["conexionsql"].ToString());
+            conn = new SqlConnection(ConfigurationManager.ConnectionStrings["conexion1"].ToString());
             conn.Open();
         }
 
