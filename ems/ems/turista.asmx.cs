@@ -24,14 +24,16 @@ namespace ems
         cnx cnx;
         SqlDataReader rdr;
         [WebMethod]
-        public string MostrarDatos(string tipo_dato)
+        public string MostrarDatos(string tipo_dato, string variable, string actividad)
         {
          try
             {
 
                 cnx = new cnx();
-                SqlParameter[] parameters = new SqlParameter[1];
+                SqlParameter[] parameters = new SqlParameter[3];
                 parameters[0] = new SqlParameter() { ParameterName = "@TIPO_DATO", Value = tipo_dato };
+                parameters[1] = new SqlParameter() { ParameterName = "@VARIABLE", Value = variable };
+                parameters[2] = new SqlParameter() { ParameterName = "@ACTIVIDAD", Value = actividad };
                 rdr = cnx.ExecuteCommand("PR_CONSULTA_I_V_TURISTA", CommandType.StoredProcedure, parameters);
                 List<datos> list = new List<datos>();
                 if (rdr.HasRows)

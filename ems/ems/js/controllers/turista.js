@@ -1,8 +1,9 @@
 ﻿var app = angular.module("ems");
 
 app.controller('turista', function ($scope, $http) {
-    var i = JSON.stringify({ tipo_dato: 1 });
-    var v = JSON.stringify({ tipo_dato: 2 });
+    $scope.ind = 2;
+    var i = JSON.stringify({ tipo_dato: 1, variable: '1,2,3,4', actividad: 0 });
+    var v = JSON.stringify({ tipo_dato: 2, variable: '1,2,3,4', actividad: 0 });
     $http.post("turista.asmx/MostrarDatos", i).success(function ($response) {
         //console.log($response.d);
         var aux = 0;
@@ -51,7 +52,7 @@ app.controller('turista', function ($scope, $http) {
                
                 
                 if (data[0][key] != '') {
-                    if (aux3 > 2) $scope.meses.push(key);
+                    if (aux3 > 2 && data[0][key] != data[0]['anioAct']) $scope.meses.push(key);
                    
                     if (data[0][key] == data[0]["anioAct"]) {
                         aux2 = aux;
@@ -61,10 +62,13 @@ app.controller('turista', function ($scope, $http) {
 
                 } else { }
             }
-           
+            for (var i = 0; i < $scope.meses.length; i++) {
+                if ($scope.meses[i].indexOf("Act")>-1) {
+                    $scope.meses[i] = $scope.meses[i].substring(0,3);
+                }
+            }
             $scope.cols = aux2 - 2;
-            $scope.meses[$scope.meses.length - 2] = $scope.meses[0];
-            $scope.meses[$scope.meses.length-1] = "";
+        
             for (var i = 0; i < 2; i++) {
                 for (var x = 0; x < data[i].length; x++) {
                     console.log(data[i][x]);
@@ -82,7 +86,7 @@ app.controller('turista', function ($scope, $http) {
                 }
             }
             $scope.variacion = data;
-           
+
             FusionCharts.ready(function () {
                 var gr1 = new FusionCharts({
                     "type": "column2d",
@@ -111,7 +115,7 @@ app.controller('turista', function ($scope, $http) {
     });
 });
 
-app.controller('granjero', function ($scope, $http) {
+app.controller('granjero', function ($scope, $http,$timeout) {
 
     $http.post('turista.asmx/variable').success(function ($response) {
         $scope.variables = $response;
@@ -124,6 +128,10 @@ app.controller('granjero', function ($scope, $http) {
             $http.post('turista.asmx/actividad', i).success(function ($response) {
                 $scope.actividades = JSON.parse($response.d);
                 $scope.act = JSON.parse($response.d)[0];
+                $scope.$watch('meses', function () {
+                    if ($scope.meses == undefined) { }
+                    else { $timeout($scope.grafica); }
+                })
             });
         });
 
@@ -143,4 +151,69 @@ app.controller('granjero', function ($scope, $http) {
             $scope.act = JSON.parse($response.d)[0];
         });
     }
+    
+    $scope.grafica = function () {
+        var i = JSON.stringify({ tipo_dato: $scope.ind, variable: $scope.vari['id_variable'], actividad: $scope.act['id_variable'] });
+        $http.post('turista.asmx/MostrarDatos', i).success(function ($response) {
+
+            dat = [];
+            var aux = 0;
+            var data = JSON.parse($response.d);
+            for (var i = 0; i < $scope.meses.length; i++) {
+                if ($scope.meses[i].indexOf("Act") > -1) {
+                    $scope.meses[i] = $scope.meses[i].substring(0, 3);
+                }
+            }
+            for (key in data[0]) {
+                aux = aux + 1;
+                if (data[0][key] != '') {
+                    if (aux > 2 && data[0][key] != data[0]['anioAct']) {
+                        if (key.indexOf("Act") > -1) {
+                            key2 = key.substring(0, 3) + " " + $scope.anioAct;
+                            dat.push({ "label": key2, "value": data[0][key] });
+                        } else {
+                            key2 = key.substring(0, 3) + " " + $scope.anio;
+                            dat.push({ "label": key2, "value": data[0][key] });
+                        }
+                    }else{}
+                    
+                } else { }             
+                    
+            }
+            if ($scope.ind == 1) {
+                var titulo = 'Índice (base 2008=100)';
+            } else {
+                var titulo = 'Variación anual';
+            }
+            FusionCharts.ready(function () {
+                var gr1 = new FusionCharts({
+                    "type": "line",
+                    "renderAt": "chartContainer",
+                    "width": "600px",
+                    "height": "380px",
+                    "dataFormat": "json",
+                    "dataSource":
+                        {
+                            "chart": {
+                                "caption": titulo,
+                                "subcaption": " " ,
+                                "yaxisname": "",
+                                "numberprefix": "",
+                                "paletteColors": "#0075c2",
+                                "bgcolor": "FFFFFF",
+                                "useroundedges": "1",
+                                "rotatevalues": "1",
+                                "showborder": "0",
+                                "formatNumberScale": "0"
+                            },
+                            "data": dat
+                        }
+                });
+                gr1.render("graph2");
+            })
+        });
+
+
+    }
+
 })

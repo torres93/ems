@@ -17,6 +17,12 @@
        font-size: 9pt;
        font-family: Arial, Helvetica, sans-serif;
     }
+    .tdTexto {
+        font-size: 13px;
+        font-family: Arial, Helvetica, sans-serif;
+        padding: 0cm 3.0pt 0cm 3.0pt;
+        height: 12.0pt;
+    }
 
 </style>
 <div style="width: 670px">
@@ -108,7 +114,7 @@
                 </tr>
                 <tr>
                     <td width="150" align="left" valign="middle" bgcolor="#ffffff">
-                        <span class="texto">Variable:</span>
+                        <span class="tdTexto">Variable:</span>
                     </td>
                     <td align="left" valign="middle" bgcolor="#ffffff">
                         <div id="UpdatePanel3">
@@ -119,7 +125,7 @@
                 </tr>
                 <tr>
                     <td align="left" valign="middle" bgcolor="#ffffff">
-                        <span class="texto">Sector: </span>
+                        <span class="tdTexto">Sector: </span>
                     </td>
                     <td align="left" valign="middle" bgcolor="#ffffff">
                         <div id="UpdatePanel1">
@@ -131,7 +137,7 @@
                 </tr>
                 <tr>
                     <td align="left" valign="middle" bgcolor="#ffffff">
-                        <span class="texto">Actividad económica:</span>
+                        <span class="tdTexto">Actividad económica:</span>
                     </td>
                     <td align="left" valign="middle" bgcolor="#ffffff">
                         <div id="UpdatePanel2">
@@ -141,17 +147,17 @@
                 </tr>
                 <tr>
                     <td align="left" valign="middle" bgcolor="#ffffff">
-                        <span class="texto">Tipo de dato:</span>
+                        <span class="tdTexto">Tipo de dato:</span>
                     </td>
                     <td align="left" valign="middle" bgcolor="#ffffff">
                         <div id="UpdatePanel4">
                             <table id="rblTipoDato">
                                 <tbody>
                                     <tr>
-                                        <td><input name="rblTipoDato" id="rblTipoDato_0" type="radio" value="Índice (base 2008=100)"><label>Índice (base 2008=100)</label></td>
+                                        <td><input type="radio" ng-model="ind" value="1"><label class="tdTexto">Índice (base 2008=100)</label></td>
                                     </tr>
                                     <tr>
-                                        <td><input name="rblTipoDato" id="rblTipoDato_1" type="radio" checked="checked" value="Variación anual"><label>Variación anual</label></td>
+                                        <td><input type="radio" ng-model="ind" value="2"><label class="tdTexto">Variación anual</label></td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -166,7 +172,14 @@
                         &nbsp;
                     </td>
                 </tr>
+                <tr><td colspan="2" style="text-align:center"><input type="submit" name="Button1" value="Ver consulta" id="Button1" ng-click="grafica()" ></td><td></td></tr>
             </tbody>
         </table>
+        <br />
+        <div layout="row">
+            <div flex>
+                <div id="graph2" style="text-align:center"></div>
+            </div>
+        </div>
     </div>
 </div>
